@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Assistance</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/ionicons@4.5.5/dist/ionicons.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://js.pusher.com/4.4/pusher.min.js"></script>
+
+  <style>
+
+
+    #shld {
+      width: 430px;
+    }
+
+
+    .background {
+      color: black;
+      background: #FFF;
+    }
+
+
+    button {
+      background: #FFF;
+      border: none;
+    }
+
+
+    #write {
+      margin: 0 0 5px;
+      padding: 5px;
+      width: 671px;
+      background: #fff;
+      border: 1px solid #f9f9f9;
+    }
+
+    #keyboard {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    #keyboard .return {
+      float: left;
+      margin: 0 5px 5px 0;
+      width: 77px;
+      height: 40px;
+      line-height: 40px;
+      background: #fff;
+      border: 1px solid #f9f9f9;
+    }
+
+    #keyboard .capslock {
+      float: left;
+      margin: 0 5px 5px 0;
+      width: 80px;
+      height: 40px;
+      line-height: 40px;
+      background: #fff;
+      border: 1px solid #f9f9f9;
+    }
+
+    #keyboard .left-shift {
+      float: left;
+      margin: 0 5px 5px 0;
+      width: 95px;
+      height: 40px;
+      line-height: 40px;
+      background: #fff;
+      border: 1px solid #f9f9f9;
+    }
+
+    #keyboard .right-shift {
+      float: left;
+      margin: 0 5px 5px 0;
+      width: 109px;
+      height: 40px;
+      line-height: 40px;
+      background: #fff;
+      border: 1px solid #f9f9f9;
+    }
+
+    #keyboard .space {
+      float: left;
+      margin: 0 5px 5px 0;
+      width: 681px;
+      height: 40px;
+      line-height: 40px;
+      background: #fff;
+      border: 1px solid #f9f9f9;
+    }
+
+    #keyboard .letter,
+    #keyboard .symbol {
+      float: left;
+      margin: 0 6px 6px 0;
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      /* text-align: center; */
+      background: #fff;
+      border: 1px solid #f9f9f9;
+      -moz-border-radius: 5px;
+      -webkit-border-radius: 5px;
+    }
+
+    #keyboard .tab,
+    #keyboard .delete {
+      float: left;
+      margin: 0 5px 5px 0;
+      width: 70px;
+      height: 40px;
+      line-height: 40px;
+      /* text-align: center; */
+      background: #fff;
+      border: 1px solid #f9f9f9;
+      /* -moz-border-radius: 5px; */
+      /* -webkit-border-radius: 5px; */
+    }
+
+    .capslock,
+    .tab,
+    .left-shift {
+      clear: left;
+    }
+
+
+    #keyboard .capslock {
+      width: 80px;
+    }
+
+    #keyboard .return {
+      width: 77px;
+    }
+
+    #keyboard .left-shift {
+      width: 95px;
+      float: left
+    }
+
+    #keyboard .right-shift {
+      width: 109px;
+    }
+
+    .lastitem {
+      margin-right: 0;
+    }
+
+    .uppercase {
+      text-transform: uppercase;
+    }
+
+    #keyboard .space {
+      width: 669px;
+    }
+
+    .on {
+      display: none;
+    }
+
+    #keyboard li:hover {
+      position: relative;
+      top: 1px;
+      left: 1px;
+      border-color: #e5e5e5;
+      cursor: pointer;
+    }
+
+    #keyboardBackgroundDiv {
+
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      position: fixed;
+      top: 0;
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #keyboardFrameDiv {
+      height: 70vh;
+      background: white;
+      border-radius: 7px;
+
+    }
+
+
+  </style>
+
+
+
+</head>
+
+<body>
+  <div class="container">
+    <br>
+    <h1 style="">Assistance</h1>
+    <hr>
+    <div class="shadow p-3 mb-5 rounded patientCard">
+      <p style="padding-left:5px;">Should a nurse come to your room?</p>
+      <button id="one" type="YES" value="YES" class="btn btn-secondary background">YES</button>
+      <button id="two" type="NO" value="NO" class="btn btn-secondary background">NO</button>
+      <div class="Shoulddivider">
+      </div>
+    </div>
+
+    <div class="patientDivider">
+    </div>
+
+    <div class="shadow p-3 mb-5 rounded">
+      <div id="Pain_Level">
+        <p>Pain Level</p>
+        <button id="1pain" type="1" value="1" class="btn btn-secondary background">1</button>
+        <button id="2pain" type="2" value="2" class="btn btn-secondary background">2</button>
+        <button id="3pain" type="3" value="3" class="btn btn-secondary background">3</button>
+        <button id="4pain" type="4" value="4" class="btn btn-secondary background">4</button>
+        <button id="5pain" type="5" value="5" class="btn btn-secondary background">5</button>
+        <button id="6pain" type="6" value="6" class="btn btn-secondary background">6</button>
+        <button id="7pain" type="7" value="7" class="btn btn-secondary background">7</button>
+        <button id="8pain" type="8" value="8" class="btn btn-secondary background">8</button>
+        <button id="9pain" type="9" value="9" class="btn btn-secondary background">9</button>
+        <button id="10pain" type="10" value="10" class="btn btn-secondary background">10</button>
+      </div>
+    </div>
+
+    <div class="shadow p-3 mb-5 rounded">
+      <div id="Reason">
+        <p>Text Input</p>
+        <input type="text" class="form-control" id="finalReasoningInput">
+      </div>
+    </div>
+
+
+  </div>
+
+  <script>
+    var assistanceSection = "nurseRequest";
+
+    var nurseRequest = "";
+    var painLevel = 1;
+    var reasoningText = "";
+
+    var buttonCurrentlyFocused = 1;
+    var isOff = true;
+    var isCapsLock = false;
+
+    document.onkeydown = checkKey;
+
+    function checkKey(e) {
+      e = e || window.event;
+      if (e.keyCode == '38') {
+        // up arrow
+        if (assistanceSection == "nurseRequest") {
+          if (nurseRequest != "") {
+            assistanceSection = "painLevel"
+            document.getElementById('1pain').style.backgroundColor = "rgb(237, 174, 73)";
+          }
+        } else if (assistanceSection == "painLevel") {
+          assistanceSection = "reasoning";
+          document.querySelector('#keyboardBackgroundDiv').style.display = "flex";
+        } else if (assistanceSection == "reasoning") {
+
+          if (document.getElementById(buttonCurrentlyFocused).className == "letter") {
+            var value = document.getElementById(buttonCurrentlyFocused).innerHTML;
+            if (isOff && !isCapsLock) {
+              document.getElementById('write').value += value;
+            } else {
+              document.getElementById('write').value += value.toUpperCase();
+            }
+            isOff = true;
+          } else if (document.getElementById(buttonCurrentlyFocused).className == "symbol") {
+            var value;
+            if (isOff && !isCapsLock) {
+              value = document.getElementById(buttonCurrentlyFocused).getElementsByClassName('off')[0].innerHTML;
+            } else {
+              value = document.getElementById(buttonCurrentlyFocused).getElementsByClassName('on')[0].innerHTML;
+            }
+            document.getElementById('write').value += value;
+            isOff = true;
+          } else if (document.getElementById(buttonCurrentlyFocused).className == "delete lastitem") {
+            var currentValue = document.getElementById('write').value;
+            var newValue = currentValue.substring(0, currentValue.length - 1);
+            document.getElementById('write').value = newValue;
+            isOff = true;
+          } else if (document.getElementById(buttonCurrentlyFocused).className == "tab") {
+            document.getElementById('write').value += "\t";
+            isOff = true;
+          } else if (document.getElementById(buttonCurrentlyFocused).className == "symbol lastitem") {
+            var value;
+            if (isOff && !isCapsLock) {
+              value = document.getElementById(buttonCurrentlyFocused).getElementsByClassName('off')[0].innerHTML;
+            } else {
+              value = document.getElementById(buttonCurrentlyFocused).getElementsByClassName('on')[0].innerHTML;
+            }
+            document.getElementById('write').value += value;
+            isOff = true;
+          } else if (document.getElementById(buttonCurrentlyFocused).className == "capslock") {
+            isCapsLock = !isCapsLock;
+            isOff = true;
+          } else if (document.getElementById(buttonCurrentlyFocused).className == "return lastitem") {
+            document.getElementById('write').value += "\n";
+            isOff = true;
+          } else if (document.getElementById(buttonCurrentlyFocused).className == "left-shift") {
+            isOff = !isOff;
+          } else if (document.getElementById(buttonCurrentlyFocused).className == "right-shift lastitem") {
+            isOff = !isOff;
+          } else if (document.getElementById(buttonCurrentlyFocused).className == "space lastitem") {
+            document.getElementById('write').value += " ";
+          } else if (document.getElementById(buttonCurrentlyFocused).className == "Submit") {
+            reasoningText = document.getElementById('write').value;
+            document.querySelector('#keyboardBackgroundDiv').style.display = "none";
+            document.getElementById('finalReasoningInput').value = reasoningText;
+            submitAssistance()
+          }
+
+        }
+
+      } else if (e.keyCode == '40') {
+        // down arrow
+        window.location.href = 'http://76.29.91.11:4004/';
+      } else if (e.keyCode == '37') {
+        // left arrow
+
+        if (assistanceSection == "nurseRequest") {
+          document.getElementById('one').style.backgroundColor = "rgb(237, 174, 73)";
+          document.getElementById('two').style.backgroundColor = "#FFF";
+          nurseRequest = "true";
+        }
+
+        if (assistanceSection == "painLevel") {
+          painLevel -= 1;
+          if (painLevel < 1) {
+            painLevel = 10;
+          }
+          for (var i = 1; i <= 10; i++) {
+            document.getElementById(i.toString() + "pain").style.backgroundColor = "#FFF";
+          }
+          document.getElementById(painLevel.toString() + "pain").style.backgroundColor = "rgb(237, 174, 73)";
+        }
+
+        if (assistanceSection == "reasoning") {
+          buttonCurrentlyFocused -= 1;
+          if (buttonCurrentlyFocused < 1) {
+            buttonCurrentlyFocused = 55;
+          }
+          document.getElementById(buttonCurrentlyFocused).focus();
+        }
+
+      } else if (e.keyCode == '39') {
+        // right arrow
+
+        if (assistanceSection == "nurseRequest") {
+          document.getElementById('one').style.backgroundColor = "#FFF";
+          document.getElementById('two').style.backgroundColor = "rgb(237, 174, 73)";
+          nurseRequest = "false;"
+        }
+
+        if (assistanceSection == "painLevel") {
+          painLevel += 1;
+          if (painLevel > 10) {
+            painLevel = 1;
+          }
+          for (var i = 1; i <= 10; i++) {
+            document.getElementById(i.toString() + "pain").style.backgroundColor = "#FFF";
+          }
+          document.getElementById(painLevel.toString() + "pain").style.backgroundColor = "rgb(237, 174, 73)";
+        }
+
+        if (assistanceSection == "reasoning") {
+          buttonCurrentlyFocused += 1;
+          if (buttonCurrentlyFocused > 55) {
+            buttonCurrentlyFocused = 1;
+          }
+          document.getElementById(buttonCurrentlyFocused).focus();
+        }
+
+      }
+    }
+
+
+
+    function submitAssistance() {
+      console.log("assistance called")
+      $.ajax({
+        type: "POST",
+        url: "/assistance",
+        data: {
+          roomNumber: document.cookie.substring(11, ),
+          nurseRequest: nurseRequest,
+          painLevel: painLevel,
+          reasoningText: reasoningText
+        },
+        success: function() {
+          window.location.href = 'http://76.29.91.11:4004/';
+        },
+      });
+    }
+  </script>
+
+
+
+
+  <div id="keyboardBackgroundDiv">
+    <div id="keyboardFrameDiv">
+
+
+      <div id="container">
+        <textarea id="write" style="margin:10px;" rows="2"></textarea>
+        <ul id="keyboard">
+          <li><button class="symbol" id="1"><span class="off">`</span><span class="on">~</span></button></li>
+          <li><button class="symbol" id="2"><span class="off">1</span><span class="on">!</span></button></li>
+          <li><button class="symbol" id="3"><span class="off">2</span><span class="on">@</span></button></li>
+          <li><button class="symbol" id="4"><span class="off">3</span><span class="on">#</span></button></li>
+          <li><button class="symbol" id="5"><span class="off">4</span><span class="on">$</span></button></li>
+          <li><button class="symbol" id="6"><span class="off">5</span><span class="on">%</span></button></li>
+          <li><button class="symbol" id="7"><span class="off">6</span><span class="on">^</span></button></li>
+          <li><button class="symbol" id="8"><span class="off">7</span><span class="on">&</span></button></li>
+          <li><button class="symbol" id="9"><span class="off">8</span><span class="on">*</span></button></li>
+          <li><button class="symbol" id="10"><span class="off">9</span><span class="on">(</span></button></li>
+          <li><button class="symbol" id="11"><span class="off">0</span><span class="on">)</span></button></li>
+          <li><button class="symbol" id="12"><span class="off">-</span><span class="on">_</span></button></li>
+          <li><button class="symbol" id="13"><span class="off">=</span><span class="on">+</span></button></li>
+          <li><button class="delete lastitem" id="14">delete</button></li>
+          <li style=""><button class="tab" id="15">tab</button></li>
+          <li><button class="letter" id="16">q</button></li>
+          <li><button class="letter" id="17">w</button></li>
+          <li><button class="letter" id="18">e</button></li>
+          <li><button class="letter" id="19">r</button></li>
+          <li><button class="letter" id="20">t</button></li>
+          <li><button class="letter" id="21">y</button></li>
+          <li><button class="letter" id="22">u</button></li>
+          <li><button class="letter" id="23">i</button></li>
+          <li><button class="letter" id="24">o</button></li>
+          <li><button class="letter" id="25">p</button></li>
+          <li><button class="symbol" id="26"><span class="off">[</span><span class="on">{</span></button></li>
+          <li><button class="symbol" id="27"><span class="off">]</span><span class="on">}</span></button></li>
+          <li><button class="symbol lastitem" id="28"><span class="off">\</span><span class="on">|</span></button>
+          <li><button class="capslock" id="29">caps</button></li>
+          <li><button class="letter" id="30">a</button></li>
+          <li><button class="letter" id="31">s</button></li>
+          <li><button class="letter" id="32">d</button></li>
+          <li><button class="letter" id="33">f</button></li>
+          <li><button class="letter" id="34">g</button></li>
+          <li><button class="letter" id="35">h</button></li>
+          <li><button class="letter" id="36">j</button></li>
+          <li><button class="letter" id="37">k</button></li>
+          <li><button class="letter" id="38">l</button></li>
+          <li><button class="symbol" id="39"><span class="off">;</span><span class="on">:</span></button></li>
+          <li><button class="symbol" id="40"><span class="off">'</span><span class="on">&quot;</span></button></li>
+          <li><button class="return lastitem" id="41">return</button></li>
+          <li><button class="left-shift" id="42">shift</button></li>
+          <li><button class="letter" id="43">z</button></li>
+          <li><button class="letter" id="44">x</button></li>
+          <li><button class="letter" id="45">c</button></li>
+          <li><button class="letter" id="46">v</button></li>
+          <li><button class="letter" id="47">b</button></li>
+          <li><button class="letter" id="48">n</button></li>
+          <li><button class="letter" id="49">m</button></li>
+          <li><button class="symbol" id="50"><span class="off">,</span><span class="on">&lt;</span></button></li>
+          <li><button class="symbol" id="51"><span class="off">.</span><span class="on">&gt;</span></button></li>
+          <li><button class="symbol" id="52"><span class="off">/</span><span class="on">?</span></button></li>
+          <li><button class="right-shift lastitem" id="53">shift</button></li>
+          <li><button class="space lastitem" id="54">Space</button></li>
+          <center><button id="55" class="Submit" style="background-color:#7caeff;color:black;width:200px;height:40px;margin:17px;border-radius: 5px;">Submit</button></center>
+          </li>
+        </ul>
+
+      </div>
+
+    </div>
+  </div>
+
+
+
+</body>
+
+</html>

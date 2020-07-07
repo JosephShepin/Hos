@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Patient Dashboard</title>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/ionicons@4.5.5/dist/ionicons.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://js.pusher.com/4.4/pusher.min.js"></script>
+</head>
+
+<body>
+  <style>
+    .emergency {
+         /* background-color: #D1495B; */
+         border-radius: 5px;
+         height: 150px;
+         transition: .3s;
+         }
+         .assistance {
+         /* background-color: #EDAE49; */
+         border-radius: 5px;
+         height: 150px;
+         transition: .3s;
+         }
+         p {
+         font-size: 30px;
+         padding-top: 40px;
+         color: white;
+         }
+         .popupDiv {
+         height: 500px;
+         }
+         /* .optionHeaderDiv {
+         position: relative;
+         height: 50px;
+         width: 100%;
+         border-radius: 20px;
+         display: table;
+         padding: 5px;
+         transition: .25s;
+         transition-timing-function: ease-in-out;
+         } */
+         /* .optionHeader {
+         display: table-cell;
+         vertical-align: middle;
+         position: relative;
+         left: 5px;
+         } */
+         .spacer {
+         height: 10px;
+         }
+         #emergencyConfirmedBackgroundDiv {
+         width: 100%;
+         height: 100%;
+         background: rgba(0, 0, 0, 0.8);
+         position: fixed;
+         top: 0;
+         display: none;
+         justify-content: center;
+         align-items: center;
+         }
+         /* #emergencyConfirmedFrameDiv {
+         width: 70vw;
+         height: 70vh;
+         background: white;
+         border-radius: 15px;
+         text-align: center;
+         display: table;
+         } */
+         #centeringDiv {
+         display: table-cell;
+         vertical-align: middle;
+         height: 70vh;
+         }
+         .emergencyConfirmedMessage {
+         padding: 10px;
+         }
+         #control{
+         display:inline-block;
+         color:black;
+         padding-right:20px;
+         }
+         #controlicon{
+         position: relative;
+         top:5px;
+         padding-right:5px;
+         }
+      </style>
+  <br>
+  <div class="question"></div>
+  <div class="container">
+    <div class="alert alert-primary" style="display:none;" id="confirmMessage" role="alert">
+      Ok, Help is on the way
+    </div>
+    <div style="" id="question"></div>
+    <div class="shadow p-3 mb-5 rounded" id="getRoomNumber">
+      <input type="text" class="form-control" id="roomNumber" placeholder="Enter your room number">
+      <br>
+      <button onclick="showDashboard()" class="btn btn-primary">Next</button>
+    </div>
+    <div class="shadow p-3 mb-5 rounded" id="dashboard">
+      <br>
+      <h2 style="display:inline-block;" id="roomNumberTag">Dashboard</h2>
+      <iframe style="display:inline-block; float:right;" src="http://free.timeanddate.com/clock/i6se28ty/n64/fs28/th2" frameborder="0" width="225" height="34"></iframe>
+<br>
+
+      <hr>
+      <br>
+      <div class="row">
+        <div class="col-sm-6" style="margin-bottom:10px;">
+          <div class="">
+            <div id="1" class="bg bg-danger emergency">
+              <center>
+                <p>EMERGENCY</p>
+              </center>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div id="2" class="bg bg-warning assistance">
+            <center>
+              <p>ASSISTANCE</p>
+            </center>
+            <div class="patient">
+              <div class="patientDivider">
+              </div>
+            </div>
+          </div>
+          <br>
+        </div>
+      </div>
+      <div class="text-center">
+        <div style="float:center;" class="controls">
+          <ion-icon id="controlicon" style="font-size:30px;" name="arrow-round-back"></ion-icon>
+          <p id="control">Left</p>
+          <ion-icon id="controlicon" style="font-size:30px;" name="arrow-round-forward"></ion-icon>
+          <p id="control">Right</p>
+          <ion-icon id="controlicon" style="font-size:30px;" name="arrow-round-up"></ion-icon>
+          <p id="control">Select</p>
+          <ion-icon id="controlicon" style="font-size:30px;" name="arrow-round-down"></ion-icon>
+          <p id="control">Go Back</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    var questionShown = false;
+    var dashboardOptionSelection = "";
+    var answer = "foo";
+
+    let roomNumber = document.cookie.substring(11, )
+    $("#roomNumberTag").text("Dashboard  Rm. " + roomNumber)
+    console.log(roomNumber)
+    if (roomNumber.length > 0) {
+      $("#getRoomNumber").hide()
+      $("#dashboard").show()
+    } else {
+      $("#dashboard").hide()
+    }
+
+    function showDashboard() {
+      let roomNumber = document.querySelector("#roomNumber").value;
+      if (roomNumber.length > 0) {
+        $("#getRoomNumber").hide()
+        $("#dashboard").show()
+        document.cookie = "roomNumber=" + roomNumber;
+      }
+    }
+    var pusher = new Pusher('', {
+      cluster: 'us2',
+      forceTLS: true
+    });
+
+    var channel = pusher.subscribe('room' + document.cookie.substring(11, ));
+    channel.bind('my-event', function(data) {
+
+      optionData = data.options.split(',')
+      console.log(optionData)
+      console.log(typeof optionData)
+
+      question = `
+           <div class="shadow p-3 mb-5 rounded" id="questionShown">
+
+           <h1>${data.question}</h1>`
+
+      for (let x in optionData) {
+        question += `
+               <div class="optionHeaderDiv" id="${Number(x)+1}">
+                  <h4 class="optionHeader">${optionData[x]}</h4>
+               </div>
+               <div class="spacer"></div>`
+      }
+
+      question +=
+        `
+           <br>
+           <button type="button" name="button" class="btn btn-light" style="border-radius:50px; font-size:20px; border: 2px solid black;" id="1000">Submit</button>
+         </div>
+         </div>
+         </div>
+
+
+           <script>
+
+           document.onkeydown = checkQuestionKey;
+           document.getElementById('1000').style.backgroundColor = "rgb(255, 255, 255)";
+
+           var selectionNumber = 0;
+           var numOfSelections = ${optionData.length};
+           var selectedOption = 0;
+
+           function checkQuestionKey(e) {
+             e = e || window.event;
+
+             if (e.keyCode == '38') {
+               // up arrow
+
+               if (selectionNumber == 1000) {
+
+                 if (selectedOption == 0) {
+
+                 } else {
+                   $("#questionShown").hide()
+                   questionShown = false;
+                   console.log("answer recorded")
+                   answer = document.getElementById(selectedOption).getElementsByClassName('optionHeader')[0].innerHTML;
+                   answerQuestion()
+                 }
+               } else {
+
+                 for (var i = 1; i <= numOfSelections; i++) {
+                   document.getElementById(i).style.backgroundColor = "white";
+                 }
+                 document.getElementById(selectionNumber).style.backgroundColor = "rgb(120, 124, 132)";
+                 selectedOption = selectionNumber;
+               }
+
+             } else if (e.keyCode == '40') {
+               // down arrow
+             } else if (e.keyCode == '37') {
+               // left arrow
+               selectionNumber -= 1;
+               hoverOption()
+             } else if (e.keyCode == '39') {
+               // right arrow
+               selectionNumber += 1;
+               hoverOption()
+             }
+           }
+
+           function hoverOption() {
+             if (selectionNumber == numOfSelections+1) {
+               selectionNumber = 1000;
+             }
+             if (selectionNumber == 999) {
+               selectionNumber = numOfSelections;
+             }
+             if (selectionNumber == 0) {
+               selectionNumber = 1000;
+             }
+             if (selectionNumber == 1001) {
+               selectionNumber = 1;
+             }
+
+             for (var i = 1; i <= numOfSelections; i++) {
+               document.getElementById(i).style.backgroundColor = "white";
+             }
+             if (selectedOption != 0) {
+               document.getElementById(selectedOption).style.backgroundColor = "rgb(120, 124, 132)";
+             }
+             document.getElementById('1000').style.backgroundColor = "rgb(255, 255, 255)";
+
+             if (selectionNumber == 1000) {
+               document.getElementById(selectionNumber).style.backgroundColor = "rgb(220, 224, 232)";
+             } else {
+               document.getElementById(selectionNumber).style.backgroundColor = "rgb(220, 224, 232)";
+             }
+           }
+
+           <\/script>`
+      $("#question").empty()
+      $("#question").append(question)
+      questionShown = true;
+    });
+
+    checkSelector()
+
+    function checkSelector() {
+      let questionBlock = document.querySelector("#questionShown")
+      if (!questionShown || question.style.display == "none") {
+        console.log("Emergency block enabled")
+        let emergency = document.querySelector(".emergency")
+        let assistance = document.querySelector(".assistance")
+        document.onkeydown = checkKey;
+
+        function checkKey(e) {
+          e = e || window.event;
+          if (e.keyCode == '37') {
+            // left arrow select emergency
+            emergency.style.border = "4px solid #29465B"
+            assistance.style.border = "4px solid #FFF"
+            dashboardOptionSelection = "emergency";
+          } else if (e.keyCode == '39') {
+            // right arrow select assistance
+            assistance.style.border = "4px solid #29465B"
+            emergency.style.border = "4px solid #FFF"
+            dashboardOptionSelection = "assistance"
+          } else if (e.keyCode == '38') {
+            // up arrow make selection
+            if (dashboardOptionSelection != "") {
+              dashboardOptionSelected(dashboardOptionSelection);
+            }
+          }
+        }
+      }
+    }
+
+    function dashboardOptionSelected(optionSelection) {
+      if (optionSelection == "emergency") {
+        emergency()
+
+      } else {
+        window.location.href = 'http://76.29.91.11:4004/getAssistance';
+      }
+    }
+
+
+    function emergency() {
+
+      console.log("emergency called")
+      $.ajax({
+        type: "POST",
+        url: "/emergency",
+        data: {
+          roomNumber: document.cookie.substring(11, )
+        },
+        success: function() {
+          document.querySelector('#confirmMessage').style.display = "block";
+          setTimeout(hideEmergencyConfirm, 3000);
+        },
+      });
+    }
+
+    function answerQuestion() {
+      console.log("posting answer" + answer + " on room " + roomNumber)
+      // alert(answer)
+      $.ajax({
+        type: "POST",
+        url: "/answerQuestion",
+        data: {
+          answer: answer,
+          roomNumber: roomNumber
+        },
+        success: function() {
+          location.reload()
+        },
+      });
+
+    }
+
+    function hideEmergencyConfirm() {
+      document.querySelector('#confirmMessage').style.display = "none";
+    }
+  </script>
+</body>
+
+</html>

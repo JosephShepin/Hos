@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>Nurse Dashboard</title>
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+      <script src="https://unpkg.com/ionicons@4.5.5/dist/ionicons.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+      <script src="https://js.pusher.com/4.4/pusher.min.js"></script>
+      <script>
+         window.channel = null;
+         Pusher.logToConsole = true;
+
+         var pusher = new Pusher('', {
+           cluster: 'us2',
+           forceTLS: true
+         });
+      </script>
+   </head>
+   <style>
+      .dot {
+      height: 25px;
+      width: 25px;
+      position: relative;
+      top:-3px;
+      right:-3px;
+      background-color: #06D6A0;
+      border-radius: 50%;
+      display: inline-block;
+      }
+      ion-icon{
+      transition:.3s ease-in-out;
+      }
+      ion-icon:hover{
+      transform:scale(1.08);
+      color:gray;
+      }
+      .inlineName {
+      position: relative;
+      font-size: 20px;
+      top: -10px;
+      }
+      .inlineRoom {
+      position: relative;
+      top: -28px;
+      font-size: 15px;
+      }
+      .patientDivider {
+      position: relative;
+      top: -5px;
+      }
+      .nameDivider {
+      position: relative;
+      top: -38px;
+      }
+      .patient {
+      height: 75px;
+      }
+   </style>
+   <body>
+      <br>
+      <div class="container-fluid">
+         <h1 style="display:inline-block;">Nurse Dashboard</h1>
+         <ion-icon name="add" onclick="showPatientForm()" style="position:relative; font-size:40px; top:8px; right:10px; display:inline-block; float:right;"></ion-icon>
+         <hr>
+         <div class="row">
+            <div class="col-sm-4">
+               <div class="shadow p-3 mb-5 bg-white rounded patientCard">
+                  <p></p>
+                  {% for patient in patients %}
+                  <div class="patient" onclick="showPerson('{{patient.name}}','{{patient.conditions}}','{{patient.roomNumber}}')">
+                     <div class="patientDivider">
+                        <p  style="display:inline-block;" class="inlineName">{{patient.name}}</p>
+                        <ion-icon name="close" onclick="deletePatient('{{patient.roomNumber}}')" style="display:inline-block; float:right; font-size:25px;"></ion-icon>
+                        <p class="inlineRoom">Room: {{patient.roomNumber}}</p>
+                     </div>
+                     <hr class="nameDivider">
+                  </div>
+                  {% endfor %}
+                  <br />
+               </div>
+               <div class="responseBlock">
+                  <h6 class="card-subtitle mb-2 text-muted" onclick="clearAnsweres()" >Clear</h6>
+                  <div class="response">
+                  </div>
+               </div>
+               <div class="text-center">
+                  <div class="addPatient" style="display:none;">
+                     <div class="shadow p-3 mb-5 bg-white rounded patientCard">
+                        <p style="float:left;">New Patient</p>
+                        <input type="text" class="form-control" id="nameInput" placeholder="Name">
+                        <br>
+                        <input type="text" class="form-control" id="ageInput" placeholder="Age">
+                        <br>
+                        <input type="text" class="form-control" id="roomNumberInput" placeholder="Room Number">
+                        <br>
+                        <input type="text" class="form-control" id="conditionsInput" placeholder="Conditions">
+                        <br>
+                        <button onclick="addPatient()" style="float:left;" class="btn btn-dark">Add</button>
+                        <br>
+                        <br>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-sm-8 moreInfo" style="display:none;">
+               <div class="shadow p-3 bg-white rounded">
+                  <p id="patientName" style="font-size:22px;">Rishi Sen...</p>
+                  <p style="display:inline-block;">Conditions:</p>
+                  <p id="patientCondition" style="position:relative; top:-17px;">- lack of search bar abilities</p>
+               </div>
+               <br>
+               <div class="shadow p-3 mb-5 bg-white rounded">
+                  <div class="askQuestion">
+                     <input type="text" class="form-control" id="questionInput" value="" id="questionInput" placeholder="Enter Question">
+                     <hr>
+                     <div id="responseOptions">
+                     </div>
+                     <div class="text-center">
+                        <button type="button" name="button" class="btn btn-dark" style="border-radius:20px; height:40px;" onclick="showResponseOptions()">
+                           <ion-icon name="add" style="position:relative; top:4px; font-size:19px; left: -5px;"></ion-icon>
+                           Response Option
+                        </button>
+                     </div>
+                     <br>
+                     <div class="text-center">
+                        <button onclick="askQuestion()" class="btn btn-dark" style="border-radius:20px; height:40px;" id="Button">Send</button>
+                        <br>
+                        <br>
+                        <center>
+                        </center>
+                     </div>
+                     <br>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <script>
+         var responseOptions = 0;
+         window.roomPatientRoomNumber = 0;
+
+         $(".responseBlock").hide()
+
+
+         // window.channel = pusher.subscribe(`room${patientRoomNumber}`);
+         window.channel = pusher.subscribe(`responses`);
+
+         window.channel.bind('questionResponse', function(data) {
+           console.log(data)
+           $(".responseBlock").show()
+           // alert(data.type)
+
+           if(data.type == "emergency"){
+             let responseData =
+               `
+                   <div style="color:white;"class="card border border-light bg bg-danger" style="width: 18rem;">
+                     <div class="card-body">
+                       <h5 class="card-title">${data.name}</h5>
+
+                       <h6 class="card-subtitle mb-2">Patient Emergency</h6>
+                       <p class="card-text">Room ${data.roomNumber}</p>
+                     </div>
+                   </div>
+                   <br />
+               `
+             $('.response').prepend(responseData)
+
+           }else if(data.type == "assistance"){
+             console.log("assistance called")
+             let responseData =
+               `
+               <div style="color:white;"class="card border border-light bg bg-warning" style="width: 18rem; ">
+                     <div class="card-body">
+                       <h5 class="card-title">${data.name}</h5>
+
+                       <h6 class="card-subtitle mb-2 ">Assistance Request</h6>
+                     Nurse Request: ${data.nurseRequest == "true" ? "Yes" : "No"},
+                     Pain Level: ${data.painLevel}
+                     <br />
+                     Notes: ${data.reasoningText}</p>
+
+                     </div>
+                   </div>
+                   <br />
+                   `
+
+                 $('.response').prepend(responseData)
+           }else{
+         console.log("question")
+             let responseData =
+               `
+               <div style="color:white;"class="card border border-light bg bg-primary" style="width: 18rem;">
+                     <div class="card-body">
+                       <h5 class="card-title">${data.name}</h5>
+                       <h6 class="card-subtitle mb-2">Question Response</h6>
+                       <p class="card-text">Answer: ${data.answer}</p>
+
+                     </div>
+                   </div>
+                   <br />`
+
+                 $('.response').prepend(responseData)
+           }
+
+
+           document.getElementById('Button').innerHTML = "Send";
+
+         });
+
+
+         function clearAnsweres(){
+         $(".response").empty()
+         }
+
+         function showPerson(patientName, patientCondition, patientRoomNumber) {
+           window.roomPatientRoomNumber = patientRoomNumber
+           // console.log("Room number " + window.roomPatientRoomNumber)
+           let name = document.querySelector("#patientName")
+           let condition = document.querySelector("#patientCondition")
+
+           name.innerText = patientName
+           condition.innerText = patientCondition
+
+           let moreInfo = document.querySelector(".moreInfo");
+           moreInfo.style.display = "block";
+         }
+
+         function showResponseOptions() {
+           var previousResponseOptions = [];
+           for (var i = 1; i <= responseOptions; i++) {
+             var responseOption = document.getElementById(`responseOption${i}`).value;
+             previousResponseOptions.push(`<input type="text" class="form-control" id="responseOption${i}" placeholder="Enter Response Option" value="${responseOption}">
+             <br>`);
+           }
+
+           responseOptions++;
+           let newOption = `<input type="text" class="form-control" id="responseOption${responseOptions}" placeholder="Enter Response Option">
+           <br>`;
+           previousResponseOptions.push(newOption);
+           document.getElementById('responseOptions').innerHTML = "";
+           for (var i = 0; i < previousResponseOptions.length; i++) {
+             document.getElementById('responseOptions').innerHTML += previousResponseOptions[i];
+           }
+         }
+
+         function showPatientForm() {
+           let addPatient = document.querySelector(".addPatient");
+           addPatient.style.display = "block";
+         }
+
+         function addPatient() {
+           let name = document.querySelector("#nameInput").value;
+           let age = document.querySelector("#ageInput").value;
+           let roomNumber = document.querySelector("#roomNumberInput").value;
+           let conditions = document.querySelector("#conditionsInput").value;
+
+           $.ajax({
+             type: "POST",
+             url: "/addPatient",
+             data: {
+               name: name,
+               age: age,
+               roomNumber: roomNumber,
+               conditions: conditions
+             },
+             success: function() {
+               location.reload()
+             },
+           });
+
+         }
+
+
+
+         function deletePatient(roomNumber) {
+           $.ajax({
+             type: "POST",
+             url: "/deletePatient",
+             data: {
+               roomNumber: roomNumber
+             },
+             success: function() {
+               location.reload()
+             },
+           });
+
+         }
+
+         function askQuestion() {
+           data = []
+
+           let questionInput = document.querySelector("#questionInput").value;
+           // console.log(questionInput)
+
+           for (var i = 1; i <= responseOptions; i++) {
+             let questionValue = document.querySelector(`#responseOption${i}`).value;
+             // console.log(questionValue)
+             data.push(questionValue)
+           }
+
+           $.ajax({
+             type: "POST",
+             url: "/askQuestion",
+             data: {
+               question: questionInput,
+               options: String(data),
+               roomNumber: window.roomPatientRoomNumber
+             },
+             // success: function(){location.reload()} ,
+           });
+
+           document.getElementById('Button').innerHTML = "Waiting for patient response...";
+
+         }
+      </script>
+   </body>
+</html>
